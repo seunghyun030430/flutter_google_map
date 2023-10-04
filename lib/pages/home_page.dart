@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:demo/widgets/map_widget.dart';
 import 'package:demo/pages/profile_page.dart';
+import 'package:demo/pages/firestore_page.dart';
+import 'package:demo/pages/search_page.dart';
 import 'package:demo/widgets/search_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,14 +16,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _showSearchWidget = true;
   bool _showBottomNavigationBar = true;
+  bool _showSearchPage = false;
   bool _showProfilePage = false;
   bool _showDraggableScrollableSheet = true;
   int _selectedIndex = 1;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Index 0: Map'),
-    Text('Index 1: Home'),
-    Text('Index 2: Profile'),
-  ];
 
   void _onItemTapped(int index) {
     if (index == 2) {
@@ -41,16 +39,19 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _onItemTapped(_selectedIndex);
-  // }
   onSearch(String query) {
-    //DraggableScrollableSheet, bottomNavgation 안보이게 하기
     setState(() {
       _showBottomNavigationBar = false;
+      _showDraggableScrollableSheet = false;
+      _showSearchWidget = false;
+      _showSearchPage = true;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _onItemTapped(_selectedIndex);
   }
 
   @override
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           MapWidget(),
-          if (_showProfilePage) ...[ProfilePage()],
+          if (_showProfilePage) ...[FirestorePage()],
           if (_showSearchWidget) ...[
             Positioned(
               top: MediaQuery.of(context).padding.top +
