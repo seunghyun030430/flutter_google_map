@@ -31,10 +31,13 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  cloud_firestore: ^4.9.3
-  firebase_core: ^2.16.0
-  flutter_svg: ^1.1.0
   flutter_polyline_points: ^2.0.0
+  flutter_svg: ^1.1.0
+  firebase_core: ^2.16.0
+  firebase_auth: ^4.10.1
+  cloud_firestore: ^4.9.3
+  google_sign_in: ^6.1.5
+  google_sign_in_web: ^0.12.0+5
   google_maps_flutter: ^2.5.0
   location: ^5.0.0
 

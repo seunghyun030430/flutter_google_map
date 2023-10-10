@@ -32,6 +32,32 @@
   <title>demo</title>
   <link rel="manifest" href="manifest.json">
 
+  <!-- Auth -->
+  <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-firestore.js"></script>    
+  <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-storage.js"></script>
+  <meta name="google-signin-client_id" content="204617251938-b8i0ot35nm80bf8u97krcfv40e6rqgrv.apps.googleusercontent.com">
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyACZEX69AO7GzpKti0rirDSDQXZG-ue06w",
+      authDomain: "flutter-map-248ae.firebaseapp.com",
+      projectId: "flutter-map-248ae",
+      storageBucket: "flutter-map-248ae.appspot.com",
+      messagingSenderId: "204617251938",
+      appId: "1:204617251938:web:bde6085508e530c0bd653b"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+
   <!-- Google Maps API Key -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTA0BhEFiSRsGBD84RvqCiAtQlN9XGxGk"></script>
 

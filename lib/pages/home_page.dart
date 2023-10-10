@@ -1,9 +1,14 @@
+import 'package:demo/pages/user/auth_page.dart';
+import 'package:demo/pages/user/user_page.dart';
+import 'package:demo/pages/user/register_page.dart';
 import 'package:flutter/material.dart';
-import 'package:demo/widgets/map_widget.dart';
-import 'package:demo/pages/profile_page.dart';
-import 'package:demo/pages/firestore_page.dart';
-import 'package:demo/pages/search_page.dart';
+
 import 'package:demo/widgets/search_widget.dart';
+import 'package:demo/widgets/map_widget.dart';
+import 'package:demo/pages/user/profile_page.dart';
+import 'package:demo/pages/user/login_page.dart';
+import 'package:demo/pages/database_page.dart';
+import 'package:demo/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,27 +19,51 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _showMapWidget = true;
   bool _showSearchWidget = true;
-  bool _showBottomNavigationBar = true;
   bool _showSearchPage = false;
+  bool _showBottomNavigationBar = true;
+  bool _showDatabasePage = false;
   bool _showProfilePage = false;
   bool _showDraggableScrollableSheet = true;
   int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
-    if (index == 2) {
+    if (index == 0) {
       setState(() {
         _selectedIndex = index;
-        _showProfilePage = true;
+        _showMapWidget = true;
+        _showSearchWidget = true;
+        _showProfilePage = false;
+        _showDatabasePage = false;
+        _showDraggableScrollableSheet = false;
+      });
+    } else if (index == 1) {
+      setState(() {
+        _selectedIndex = index;
+        _showMapWidget = true;
+        _showSearchWidget = true;
+        _showDatabasePage = false;
+        _showProfilePage = false;
+        _showDraggableScrollableSheet = true;
+      });
+    } else if (index == 2) {
+      setState(() {
+        _selectedIndex = index;
+        _showMapWidget = false;
+        _showProfilePage = false;
+        _showDatabasePage = true;
         _showSearchWidget = false;
         _showDraggableScrollableSheet = false;
       });
-    } else {
+    } else if (index == 3) {
       setState(() {
         _selectedIndex = index;
-        _showProfilePage = false;
-        _showSearchWidget = true;
-        _showDraggableScrollableSheet = true;
+        _showMapWidget = false;
+        _showProfilePage = true;
+        _showDatabasePage = false;
+        _showSearchWidget = false;
+        _showDraggableScrollableSheet = false;
       });
     }
   }
@@ -60,8 +89,9 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          MapWidget(),
-          if (_showProfilePage) ...[FirestorePage()],
+          if (_showMapWidget) ...[MapWidget()],
+          if (_showProfilePage) ...[UserPage()],
+          if (_showDatabasePage) ...[DatabasePage()],
           if (_showSearchWidget) ...[
             Positioned(
               top: MediaQuery.of(context).padding.top +
@@ -99,26 +129,32 @@ class _HomePageState extends State<HomePage> {
               right: 0,
               bottom: 0,
               child: BottomNavigationBar(
+                backgroundColor: Colors.white,
                 // backgroundColor: Colors.blue,
                 items: const <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     icon: Icon(Icons.map),
                     label: 'Map',
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.grey,
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
                     label: 'Home',
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.grey,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.dataset_linked),
+                    label: 'Database',
+                    backgroundColor: Colors.grey,
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.person),
                     label: 'Profile',
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.grey,
                   ),
                 ],
                 currentIndex: _selectedIndex,
-                selectedItemColor: Colors.amber[800],
+                selectedItemColor: Colors.white,
                 onTap: _onItemTapped,
               ),
             ),

@@ -50,6 +50,7 @@ class _MapPageState extends State<MapPage> {
   void _getPolyline() async {
     PolylinePoints polylinePoints = PolylinePoints();
 
+    //flutter run -d chrome --web-browser-flag "--disable-web-security"
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       google_map_api_key,
       PointLatLng(_sourceLocation.latitude, _sourceLocation.longitude),
