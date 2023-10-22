@@ -11,18 +11,17 @@ class DatabasePage extends StatefulWidget {
 
 class _DatabasePageState extends State<DatabasePage> {
   CollectionReference place = FirebaseFirestore.instance.collection('place');
+  CollectionReference typeCollection =
+      FirebaseFirestore.instance.collection('type');
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
 
   String selectedClient = 'hiking';
 
-  CollectionReference typeCollection =
-      FirebaseFirestore.instance.collection('type');
-
   Future<void> _update(DocumentSnapshot document) async {
-    nameController.text = document['lat'].toString();
-    priceController.text = document['lng'].toString();
+    nameController.text = document['location'].longitude.toString();
+    priceController.text = document['location'].latitude.toString();
 
     await showModalBottomSheet(
       isScrollControlled: true,
@@ -47,8 +46,10 @@ class _DatabasePageState extends State<DatabasePage> {
               ElevatedButton(
                 onPressed: () async {
                   await document.reference.update({
-                    'lat': nameController.text,
-                    'lng': priceController.text,
+                    'location': GeoPoint(
+                      double.parse(nameController.text),
+                      double.parse(priceController.text),
+                    ),
                   });
 
                   nameController.clear();
@@ -87,10 +88,14 @@ class _DatabasePageState extends State<DatabasePage> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await place.add({
-                    'lat': nameController.text,
-                    'lng': priceController.text,
-                  });
+                  await place.add(
+                    {
+                      'location': GeoPoint(
+                        double.parse(nameController.text),
+                        double.parse(priceController.text),
+                      ),
+                    },
+                  );
                   nameController.clear();
                   priceController.clear();
                   Navigator.of(context).pop();
@@ -162,8 +167,10 @@ class _DatabasePageState extends State<DatabasePage> {
                               snapshot.data!.docs[index];
                           return Card(
                             child: ListTile(
-                              title: Text(document['lat'].toString()),
-                              subtitle: Text(document['lng'].toString()),
+                              title: Text(
+                                  document['location'].latitude.toString()),
+                              subtitle: Text(
+                                  document['location'].longitude.toString()),
                               trailing: SizedBox(
                                 width: 100,
                                 child: Row(
