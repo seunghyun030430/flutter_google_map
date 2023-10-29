@@ -1,13 +1,10 @@
-import 'package:demo/pages/user/auth_page.dart';
 import 'package:demo/pages/user/user_page.dart';
-import 'package:demo/pages/user/register_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:demo/widgets/search_widget.dart';
 import 'package:demo/widgets/map_widget.dart';
-import 'package:demo/pages/user/profile_page.dart';
-import 'package:demo/pages/user/login_page.dart';
-import 'package:demo/pages/database_page.dart';
+import 'package:demo/pages/trail/trail_page.dart';
+import 'package:demo/pages/threat/threat_page.dart';
 import 'package:demo/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,9 +20,10 @@ class _HomePageState extends State<HomePage> {
   bool _showSearchWidget = true;
   bool _showSearchPage = false;
   bool _showBottomNavigationBar = true;
-  bool _showDatabasePage = false;
+  bool _showTrailPage = false;
+  bool _showThreatPage = false;
   bool _showProfilePage = false;
-  bool _showDraggableScrollableSheet = true;
+  bool _showDraggableScrollableSheet = false;
   int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
@@ -35,35 +33,35 @@ class _HomePageState extends State<HomePage> {
         _showMapWidget = true;
         _showSearchWidget = true;
         _showProfilePage = false;
-        _showDatabasePage = false;
-        _showDraggableScrollableSheet = false;
+        _showTrailPage = false;
+        _showThreatPage = false;
       });
     } else if (index == 1) {
       setState(() {
         _selectedIndex = index;
-        _showMapWidget = true;
-        _showSearchWidget = true;
-        _showDatabasePage = false;
+        _showMapWidget = false;
+        _showSearchWidget = false;
+        _showTrailPage = false;
         _showProfilePage = false;
-        _showDraggableScrollableSheet = true;
+        _showThreatPage = true;
       });
     } else if (index == 2) {
       setState(() {
         _selectedIndex = index;
         _showMapWidget = false;
-        _showProfilePage = false;
-        _showDatabasePage = true;
         _showSearchWidget = false;
-        _showDraggableScrollableSheet = false;
+        _showProfilePage = false;
+        _showTrailPage = true;
+        _showThreatPage = true;
       });
     } else if (index == 3) {
       setState(() {
         _selectedIndex = index;
         _showMapWidget = false;
         _showProfilePage = true;
-        _showDatabasePage = false;
+        _showTrailPage = false;
         _showSearchWidget = false;
-        _showDraggableScrollableSheet = false;
+        _showThreatPage = true;
       });
     }
   }
@@ -90,8 +88,9 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           if (_showMapWidget) ...[MapWidget()],
+          if (_showTrailPage) ...[TrailPage()],
+          if (_showThreatPage) ...[ThreatPage()],
           if (_showProfilePage) ...[UserPage()],
-          if (_showDatabasePage) ...[DatabasePage()],
           if (_showSearchWidget) ...[
             Positioned(
               top: MediaQuery.of(context).padding.top +
@@ -138,13 +137,13 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor: Colors.grey,
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
+                    icon: Icon(Icons.route_rounded),
+                    label: 'Trails',
                     backgroundColor: Colors.grey,
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.dataset_linked),
-                    label: 'Database',
+                    icon: Icon(Icons.dangerous),
+                    label: 'Threats',
                     backgroundColor: Colors.grey,
                   ),
                   BottomNavigationBarItem(

@@ -40,6 +40,9 @@ dependencies:
   google_sign_in_web: ^0.12.0+5
   google_maps_flutter: ^2.5.0
   location: ^5.0.0
+  image_picker: ^1.0.4
+  firebase_storage: ^11.4.0
+  custom_info_window: ^1.0.1
 
 dev_dependencies:
   flutter_test:
