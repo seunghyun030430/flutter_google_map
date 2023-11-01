@@ -14,9 +14,7 @@ class ThreatPage extends StatefulWidget {
 }
 
 class _ThreatPageState extends State<ThreatPage> {
-  CollectionReference trail = FirebaseFirestore.instance.collection('trail');
-  CollectionReference typeCollection =
-      FirebaseFirestore.instance.collection('type');
+  CollectionReference threat = FirebaseFirestore.instance.collection('threats');
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
@@ -70,18 +68,18 @@ class _ThreatPageState extends State<ThreatPage> {
     );
 
     if (result == true) {
-      await trail.doc(placeId).delete();
+      await threat.doc(placeId).delete();
     }
   }
 
-  Future<List<Map>> _getTrailList() async {
-    List<Map> trailList = [];
-    await trail.get().then((querySnapshot) {
+  Future<List<Map>> getThreatList() async {
+    List<Map> threatList = [];
+    await threat.get().then((querySnapshot) {
       querySnapshot.docs.forEach((element) {
-        trailList.add(element.data() as Map);
+        threatList.add(element.data() as Map);
       });
     });
-    return trailList;
+    return threatList;
   }
 
   @override
@@ -93,9 +91,9 @@ class _ThreatPageState extends State<ThreatPage> {
           children: [
             Container(
               padding: const EdgeInsets.all(30),
-              child: Row(children: [
-                const Text(
-                  'Trails',
+              child: const Row(children: [
+                Text(
+                  'Threats',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -105,7 +103,7 @@ class _ThreatPageState extends State<ThreatPage> {
             ),
             Expanded(
               child: StreamBuilder(
-                stream: trail.snapshots(),
+                stream: threat.snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
@@ -123,19 +121,6 @@ class _ThreatPageState extends State<ThreatPage> {
                           return Card(
                             child: ListTile(
                               // 첫번째 이미지 가져오기
-                              leading: document['image_urls'] != null &&
-                                      document['image_urls'].length > 0
-                                  ? Image.network(
-                                      document['image_urls'][0],
-                                      width: 50, // 원하는 너비를 설정할 수 있습니다.
-                                      height: 50, // 원하는 높이를 설정할 수 있습니다.
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null,
-                              title: Text(
-                                //geoPoint를 string으로 변환
-                                document['name'].toString(),
-                              ),
                               subtitle: Text(
                                 document['description'].toString(),
                               ),

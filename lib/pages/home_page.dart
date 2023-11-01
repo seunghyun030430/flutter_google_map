@@ -41,9 +41,9 @@ class _HomePageState extends State<HomePage> {
         _selectedIndex = index;
         _showMapWidget = false;
         _showSearchWidget = false;
-        _showTrailPage = false;
         _showProfilePage = false;
-        _showThreatPage = true;
+        _showTrailPage = true;
+        _showThreatPage = false;
       });
     } else if (index == 2) {
       setState(() {
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
         _showMapWidget = false;
         _showSearchWidget = false;
         _showProfilePage = false;
-        _showTrailPage = true;
+        _showTrailPage = false;
         _showThreatPage = true;
       });
     } else if (index == 3) {
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
         _showProfilePage = true;
         _showTrailPage = false;
         _showSearchWidget = false;
-        _showThreatPage = true;
+        _showThreatPage = false;
       });
     }
   }

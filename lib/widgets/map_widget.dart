@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:demo/pages/threat_detail_page.dart';
+import 'package:demo/pages/threat/threat_detail_page.dart';
 
 import 'package:custom_info_window/custom_info_window.dart';
 
@@ -15,7 +15,7 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  CustomInfoWindowController _customInfoWindowController =
+  final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   LocationData? _currentLocation;
   List<LatLng> polylineCoordinates = [];
@@ -41,14 +41,15 @@ class _MapWidgetState extends State<MapWidget> {
     super.initState();
   }
 
-  // void _navigateToThreatDetail(String type, String description) {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (context) =>
-  //           ThreatDetailPage(type: type, description: description),
-  //     ),
-  //   );
-  // }
+  void _navigateToThreatDetail(String docId) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ThreatDetailPage(
+          docId: docId,
+        ),
+      ),
+    );
+  }
 
   Future<void> getLocationUpdate() async {
     bool serviceEnabled;
@@ -82,7 +83,9 @@ class _MapWidgetState extends State<MapWidget> {
         FirebaseFirestore.instance.collection('threats');
     // ignore: non_constant_identifier_names, avoid_function_literals_in_foreach_calls
     await threats.get().then((Snapshot) => Snapshot.docs.forEach((element) {
-          threatList.add(element.data() as Map);
+          Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+          data['id'] = element.id;
+          threatList.add(data);
         }));
     return threatList;
   }
@@ -91,10 +94,16 @@ class _MapWidgetState extends State<MapWidget> {
     List<Map> threatList = await _getThreatList();
 
     for (var doc in threatList) {
+      print(doc);
+      String id = doc['id'];
       double lat = doc['coord'].latitude;
       double lng = doc['coord'].longitude;
       String type = doc['type'];
       String description = doc['description'];
+      // String firestImageUrl = '';
+      // if (doc['image_urls'].length > 0) {
+      //   firestImageUrl = doc['image_urls'][0];
+      // }
 
       customMarkers.add(
         Marker(
@@ -107,36 +116,36 @@ class _MapWidgetState extends State<MapWidget> {
               Column(
                 children: [
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.account_circle,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 8.0,
-                            ),
-                            Text(
-                              type,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
+                    child: GestureDetector(
+                      onTap: () {
+                        _navigateToThreatDetail(id);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                width: 8.0,
                               ),
-                            ),
-                          ],
+                              Text(
+                                id,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      width: double.infinity,
-                      height: double.infinity,
                     ),
                   ),
                 ],
